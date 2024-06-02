@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfect Publicity Form</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- Include jsPDF library -->
 </head>
 <body>
     <div class="container">
@@ -19,9 +20,11 @@
         <main>
             <h1>PERFECT PUBLICITY</h1>
             <p class="email">E-mail ID: ppublicity9@gmail.com</p>
-            <p>R.O. No. --- 2837</p>
-            <p>Ad. Manager</p>
             <form id="publicityForm">
+                <div class="form-group">
+                    <label for="ro-no">R.O. No.:</label>
+                    <input type="text" id="ro-no" name="ro-no" value="2837">
+                </div>
                 <div class="form-group">
                     <label for="client">Client Name:</label>
                     <input type="text" id="client" name="client">
@@ -45,6 +48,14 @@
                 <div class="form-group">
                     <label for="page-no">Page No:</label>
                     <input type="text" id="page-no" name="page-no">
+                </div>
+                <div class="form-group">
+                    <label for="bill-date">Bill Date:</label>
+                    <input type="date" id="bill-date" name="bill-date">
+                </div>
+                <div class="form-group">
+                    <label for="total-bill">Total Bill:</label>
+                    <input type="text" id="total-bill" name="total-bill">
                 </div>
                 <div class="form-group">
                     <label>Publication:</label>
@@ -74,6 +85,7 @@
                     </div>
                 </div>
                 <button type="button" onclick="sendEmail()">Email</button>
+                <button type="button" onclick="downloadPDF()">Download PDF</button> <!-- Added download PDF button -->
             </form>
             <p class="footer-text">For - Perfect Publicity</p>
         </main>
