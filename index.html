@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Publicity Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <p>GSTIN-08AJRPP2567P323</p>
+            </div>
+            <div class="header-right">
+                <p>Mob- 9414110995, 7742700995</p>
+            </div>
+        </header>
+        <main>
+            <h1>PERFECT PUBLICITY</h1>
+            <p class="email">E-mail ID: ppublicity9@gmail.com</p>
+            <p>R.O. No. --- 2837</p>
+            <p>Ad. Manager</p>
+            <form id="publicityForm">
+                <div class="form-group">
+                    <label for="client">Client Name:</label>
+                    <input type="text" id="client" name="client">
+                </div>
+                <div class="form-group">
+                    <label for="publish-date">Publish Date:</label>
+                    <input type="date" id="publish-date" name="publish-date">
+                </div>
+                <div class="form-group">
+                    <label for="size">Size:</label>
+                    <input type="text" id="size" name="size">
+                </div>
+                <div class="form-group">
+                    <label for="rate">Rate:</label>
+                    <input type="text" id="rate" name="rate">
+                </div>
+                <div class="form-group">
+                    <label for="edition">Edition:</label>
+                    <input type="text" id="edition" name="edition">
+                </div>
+                <div class="form-group">
+                    <label for="page-no">Page No:</label>
+                    <input type="text" id="page-no" name="page-no">
+                </div>
+                <div class="form-group">
+                    <label>Publication:</label>
+                    <div class="radio-options">
+                        <div>
+                            <input type="radio" id="dainik-bhaskar" name="publication" value="Dainik Bhaskar">
+                            <label for="dainik-bhaskar">Dainik Bhaskar</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="rajasthan-patrika" name="publication" value="Rajasthan Patrika">
+                            <label for="rajasthan-patrika">Rajasthan Patrika</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-inputs">
+                    <div class="bottom-input-group">
+                        <label for="less">Less:</label>
+                        <input type="text" id="less" name="less">
+                    </div>
+                    <div class="bottom-input-group">
+                        <label for="extra">Extra:</label>
+                        <input type="text" id="extra" name="extra">
+                    </div>
+                    <div class="bottom-input-group">
+                        <label for="note">Note:</label>
+                        <input type="text" id="note" name="note">
+                    </div>
+                </div>
+                <button type="button" onclick="sendEmail()">Email</button>
+            </form>
+            <p class="footer-text">For - Perfect Publicity</p>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

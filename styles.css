@@ -1,0 +1,164 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: url('background3.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+}
+
+.container {
+    width: 100%;
+    max-width: 700px; /* Adjust the maximum width of the container */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9); /* Adds a white overlay for readability */
+    border-radius: 10px; /* Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+header p {
+    margin: 0;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-align: center; /* Center the text in header paragraphs */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.email {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: contents;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.radio-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-options div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.radio-options label {
+    margin-left: 5px;
+}
+
+.bottom-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    grid-column: 1 / -1;
+}
+
+.bottom-input-group {
+    flex: 1 1 calc(33.333% - 10px);
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-input-group label {
+    margin-bottom: 5px;
+}
+
+.bottom-input-group input {
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.footer-text {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+button {
+    width: 50%;
+    height: 40px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    justify-self: center; /* Center button horizontally */
+}
+
+button:hover {
+    background-color: #555; /* Darker shade of black for hover effect */
+    transform: scale(1.05); /* Slightly increase the size of the button */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+}
+
+@media (max-width: 600px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group, .bottom-input-group {
+        flex: 1 1 100%;
+    }
+
+    .footer-text {
+        text-align: center;
+    }
+
+    button {
+        width: 100%; /* Make the button full-width on small screens */
+    }
+
+    /* Responsive adjustments for header */
+    header p {
+        margin: 3px 0; /* Adjust margin for smaller screens */
+    }
+
+    .email {
+        margin-bottom: 10px; /* Adjust margin for smaller screens */
+    }
+}
