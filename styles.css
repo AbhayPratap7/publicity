@@ -122,6 +122,7 @@ form {
     justify-content: center; /* Center the buttons horizontally */
     align-items: center;
     margin-top: 20px;
+    gap: 10px;
 }
 
 button {
@@ -171,4 +172,17 @@ button:hover {
     .email {
         margin-bottom: 10px;
     }
+}
+
+.signature-container {
+    text-align: right;
+    margin-top: 20px;
+    position: relative;
+}
+
+.signature {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto; /* Center the image horizontally and add margin below */
 }
