@@ -64,7 +64,13 @@ function downloadPDF() {
             const emailX = (doc.internal.pageSize.getWidth() - emailWidth) / 2;
             doc.text(emailID, emailX, 50);
 
-            let startY = 70; // Starting Y position for form details
+            // Add "ADVERTISEMENT RELEASE INSTRUCTIONS" below the email ID
+            const instructions = 'ADVERTISEMENT RELEASE INSTRUCTIONS';
+            const instructionsWidth = doc.getTextWidth(instructions);
+            const instructionsX = (doc.internal.pageSize.getWidth() - instructionsWidth) / 2;
+            doc.text(instructions, instructionsX, 60); // Adjust the Y position as needed
+
+            let startY = 80; // Starting Y position for form details
 
             // Add form details with increased line gap and aligned values
             const lineHeight = 12;
