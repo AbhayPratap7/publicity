@@ -6,6 +6,15 @@ function downloadPDF() {
     doc.setFillColor(255, 255, 204); // Pale yellow background
     doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
 
+    // Function to format date as DD/MM/YYYY
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     // Get form data
     const form = document.getElementById('publicityForm');
     const formData = new FormData(form);
@@ -79,6 +88,12 @@ function downloadPDF() {
             formEntries.forEach(([key, value]) => {
                 // Capitalize the form field name
                 const capitalizedKey = key.toUpperCase();
+
+                // Format date fields if necessary
+                if (capitalizedKey.includes('DATE')) {
+                    value = formatDate(value);
+                }
+
                 const text = `${capitalizedKey}:`;
                 const textWidth = doc.getTextWidth(text);
                 doc.text(text, 10, startY); // Render detail label
