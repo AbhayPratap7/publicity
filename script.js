@@ -134,10 +134,152 @@ function downloadPDF() {
             const textY = lineY - 5; // Adjust position above the line
             doc.text('For - Perfect Publicity', textX, textY);
 
-            // Save the PDF
-            doc.save('form-details.pdf');
+            // Return the Blob
+            const pdfBlob = doc.output('blob');
+            handleBlob(pdfBlob);
         };
         img2.src = 'swastik-removebg-preview.png'; // Load the swastik image
     };
     img1.src = 'sign.png'; // Load the signature image
+}
+
+function handleBlob(blob) {
+    // Create a URL for the Blob
+    const blobURL = URL.createObjectURL(blob);
+
+    // Create a download link and click it
+    const a = document.createElement('a');
+    a.href = blobURL;
+    a.download = 'form-details.pdf';
+    a.click();
+
+    // Cleanup
+    URL.revokeObjectURL(blobURL);
+}
+
+function sendEmail() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Same code as downloadPDF to create the PDF
+    doc.setFillColor(255, 255, 204);
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    const form = document.getElementById('publicityForm');
+    const formData = new FormData(form);
+    const formEntries = Array.from(formData.entries());
+
+    const img1 = new Image();
+    img1.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0);
+        const dataURL1 = canvas.toDataURL('image/png');
+
+        const img2 = new Image();
+        img2.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = this.width;
+            canvas.height = this.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(this, 0, 0);
+            const dataURL2 = canvas.toDataURL('image/png');
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            const gstinText = 'GSTIN-08AJRPP2567P323';
+            const mobileText = 'Mob- 9414110995, 7742700995';
+            doc.text(gstinText, 10, 20);
+            const textWidth = doc.getTextWidth(mobileText);
+            doc.text(mobileText, doc.internal.pageSize.getWidth() - textWidth - 10, 20);
+            const imgWidth = 20;
+            const imgHeight = 20;
+            const gstinWidth = doc.getTextWidth(gstinText);
+            const imgX = gstinWidth + (doc.internal.pageSize.getWidth() - gstinWidth - textWidth - imgWidth) / 2;
+            const imgY = 10;
+            doc.addImage(dataURL2, 'PNG', imgX, imgY, imgWidth, imgHeight);
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            const companyName = 'PERFECT PUBLICITY';
+            const companyWidth = doc.getTextWidth(companyName);
+            const companyX = (doc.internal.pageSize.getWidth() - companyWidth) / 2;
+            doc.text(companyName, companyX, 40);
+            doc.setFontSize(12);
+            const emailID = 'E-mail ID: ppublicity9@gmail.com';
+            const emailWidth = doc.getTextWidth(emailID);
+            const emailX = (doc.internal.pageSize.getWidth() - emailWidth) / 2;
+            doc.text(emailID, emailX, 50);
+            const instructions = 'ADVERTISEMENT RELEASE INSTRUCTIONS';
+            const instructionsWidth = doc.getTextWidth(instructions);
+            const instructionsX = (doc.internal.pageSize.getWidth() - instructionsWidth) / 2;
+            doc.text(instructions, instructionsX, 60);
+
+            let startY = 80;
+            const lineHeight = 12;
+            const labelWidth = 80;
+            const valueIndent = 10;
+            formEntries.forEach(([key, value]) => {
+                const capitalizedKey = key.toUpperCase();
+                if (capitalizedKey.includes('DATE')) {
+                    value = formatDate(value);
+                }
+                const text = `${capitalizedKey}:`;
+                const textWidth = doc.getTextWidth(text);
+                doc.text(text, 10, startY);
+                doc.text(value, labelWidth + valueIndent, startY);
+                startY += lineHeight;
+            });
+
+            const statement = "This document is computer-generated and serves as official.";
+            const statementWidth = doc.getTextWidth(statement);
+            const statementX = (doc.internal.pageSize.getWidth() - statementWidth) / 2;
+            const statementY = startY + 20;
+            doc.text(statement, statementX, statementY);
+
+            const signWidth = 20;
+            const signHeight = 20;
+            const signX = doc.internal.pageSize.getWidth() - signWidth - 10;
+            const signY = doc.internal.pageSize.getHeight() - signHeight - 40;
+            doc.addImage(dataURL1, 'PNG', signX, signY, signWidth, signHeight);
+
+            const signatureName = "Pawan Patwari";
+            const signatureNameWidth = doc.getTextWidth(signatureName);
+            const signatureNameX = signX + (signWidth - signatureNameWidth) / 2;
+            const signatureNameY = signY + signHeight + 5;
+            doc.setFontSize(10);
+            doc.text(signatureName, signatureNameX, signatureNameY);
+
+            const lineY = doc.internal.pageSize.getHeight() - 20;
+            const lineLength = doc.getTextWidth('For - Perfect Publicity');
+            const lineX = (doc.internal.pageSize.getWidth() - lineLength) / 2;
+            doc.line(lineX, lineY, lineX + lineLength, lineY);
+
+            const textX = (doc.internal.pageSize.getWidth() - lineLength) / 2;
+            const textY = lineY - 5;
+            doc.text('For - Perfect Publicity', textX, textY);
+
+            // Get the PDF as a base64 string
+            const pdfBase64 = doc.output('datauristring');
+
+            // Create a mailto link
+            const mailtoLink = `mailto:ppublicity9@gmail.com?subject=Form Details&body=Please find the attached PDF form.%0D%0A%0D%0A${encodeURIComponent(pdfBase64)}`;
+
+            // Create a temporary anchor element and click it to open the email client
+            const a = document.createElement('a');
+            a.href = mailtoLink;
+            a.click();
+        };
+        img2.src = 'swastik-removebg-preview.png';
+    };
+    img1.src = 'sign.png';
 }
