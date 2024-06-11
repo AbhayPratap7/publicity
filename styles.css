@@ -64,7 +64,8 @@ form {
 }
 
 .form-group input[type="text"],
-.form-group input[type="date"] {
+.form-group input[type="date"],
+.form-group input[list] {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
