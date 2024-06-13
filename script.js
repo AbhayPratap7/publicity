@@ -1,10 +1,17 @@
 // Function to initialize the form with last entered R.O. No.
 function initializeForm() {
+    const initialRO = 3010; // Set the starting R.O. No
     let lastRO = localStorage.getItem('lastRO');
+
+    if (lastRO === null) {
+        lastRO = initialRO;
+        localStorage.setItem('lastRO', lastRO.toString());
+    }
+
     const roNoInput = document.getElementById('ro-no');
     
-    // Parse lastRO to an integer, defaulting to 0 if it's not set or invalid
-    let lastRONumber = parseInt(lastRO) || 0;
+    // Parse lastRO to an integer, defaulting to initialRO if it's not set or invalid
+    let lastRONumber = parseInt(lastRO) || initialRO;
 
     // Check if there is a user-entered R.O. No
     const userRONumber = parseInt(roNoInput.value.trim());
@@ -75,7 +82,7 @@ function downloadPDF() {
 
             const gstinText = 'GSTIN-08AJRPP2567P323';
             const mobileText = 'Mob- 9414110995, 7742700995';
-            doc.text(gstinText, 10, 20);
+            doc.text(gstinText, 10,20);
             const textWidth = doc.getTextWidth(mobileText);
             doc.text(mobileText, doc.internal.pageSize.getWidth() - textWidth - 10, 20);
 
@@ -208,3 +215,4 @@ function addPublishDateInput() {
 document.addEventListener('DOMContentLoaded', () => {
     initializeForm();
 });
+
