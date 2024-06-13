@@ -1,13 +1,22 @@
 // Function to initialize the form with last entered R.O. No.
 function initializeForm() {
-    const lastRO = localStorage.getItem('lastRO');
+    let lastRO = localStorage.getItem('lastRO');
     const roNoInput = document.getElementById('ro-no');
-    if (lastRO) {
-        const suggestedRO = parseInt(lastRO) + 1;
-        roNoInput.value = suggestedRO;
-    } else {
-        roNoInput.value = '1'; // Default starting value
+    
+    // Parse lastRO to an integer, defaulting to 0 if it's not set or invalid
+    let lastRONumber = parseInt(lastRO) || 0;
+
+    // Check if there is a user-entered R.O. No
+    const userRONumber = parseInt(roNoInput.value.trim());
+    if (!isNaN(userRONumber)) {
+        lastRONumber = Math.max(lastRONumber, userRONumber);
     }
+
+    const suggestedRO = lastRONumber + 1;
+    roNoInput.value = suggestedRO.toString(); // Set the next R.O. No
+
+    // Store the updated R.O. No back into localStorage
+    localStorage.setItem('lastRO', suggestedRO.toString());
 }
 
 // Function to handle PDF download and form data storage
@@ -40,7 +49,7 @@ function downloadPDF() {
     });
 
     // Concatenating publish dates into a single string with commas
-    const publishDateText = `Publish Date: ${publishDates.join(', ')}`;
+    const publishDateText = publishDates.length > 0 ? `Publish Date: ${publishDates.join(', ')}` : '';
 
     // Rendering content to PDF
     const img1 = new Image();
