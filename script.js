@@ -1,3 +1,21 @@
+// Function to initialize the form with last entered R.O. No.
+function initializeForm() {
+    // Retrieve last R.O. No. from localStorage
+    const lastRO = localStorage.getItem('lastRO');
+
+    // Set initial value for R.O. No.
+    const roNoInput = document.getElementById('ro-no');
+    if (lastRO) {
+        // If lastRO exists, suggest the next number
+        const suggestedRO = parseInt(lastRO) + 1;
+        roNoInput.value = suggestedRO;
+    } else {
+        // If no lastRO exists, suggest a default starting number
+        roNoInput.value = '1'; // Default starting R.O. No.
+    }
+}
+
+// Function to handle PDF download and form data storage
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -19,6 +37,15 @@ function downloadPDF() {
     const form = document.getElementById('publicityForm');
     const formData = new FormData(form);
     const formEntries = Array.from(formData.entries());
+
+    // Store form data in localStorage
+    formEntries.forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+    });
+
+    // Update last R.O. No. in localStorage
+    const roNoValue = form['ro-no'].value;
+    localStorage.setItem('lastRO', roNoValue);
 
     // Load your images
     const img1 = new Image();
@@ -143,6 +170,7 @@ function downloadPDF() {
     img1.src = 'sign.png'; // Load the signature image
 }
 
+// Function to handle the generated PDF Blob
 function handleBlob(blob) {
     // Create a URL for the Blob
     const blobURL = URL.createObjectURL(blob);
@@ -157,23 +185,5 @@ function handleBlob(blob) {
     URL.revokeObjectURL(blobURL);
 }
 
-function sendEmail() {
-    // Get form data
-    const form = document.getElementById('publicityForm');
-    const formData = new FormData(form);
-    const formEntries = Array.from(formData.entries());
-
-    // Format form details into a readable string
-    let formDetails = '';
-    formEntries.forEach(([key, value]) => {
-        formDetails += `${key.toUpperCase()}: ${value}\n`;
-    });
-
-    // Create a mailto link with the form details
-    const mailtoLink = `mailto:ppublicity9@gmail.com?subject=Form Details&body=${encodeURIComponent(formDetails)}`;
-
-    // Create a temporary anchor element and click it to open the email client
-    const a = document.createElement('a');
-    a.href = mailtoLink;
-    a.click();
-}
+// Initialize the form when the script loads
+initializeForm();
