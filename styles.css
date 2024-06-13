@@ -1,8 +1,13 @@
-body {
-    font-family: Arial, sans-serif;
+/* Resetting default styles */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
     background-image: url('background3.png');
     background-size: cover;
     background-position: center;
@@ -11,8 +16,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
+/* Container styles */
 .container {
     width: 100%;
     max-width: 700px;
@@ -22,47 +30,54 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Header styles */
 header {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
 header p {
-    margin: 0;
     max-width: 100%;
     word-wrap: break-word;
     text-align: center;
+    margin: 0;
 }
 
+/* Main heading styles */
 h1 {
     text-align: center;
     margin-bottom: 10px;
 }
 
+/* Email ID paragraph styles */
 .email {
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Form styles */
 form {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 20px;
 }
 
+/* Form group styles */
 .form-group {
     display: contents;
 }
 
+/* Label styles */
 .form-group label {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
+/* Input field styles */
 .form-group input[type="text"],
 .form-group input[type="date"],
 .form-group input[list] {
@@ -73,6 +88,7 @@ form {
     border-radius: 4px;
 }
 
+/* Radio options styles */
 .radio-options {
     display: flex;
     flex-direction: column;
@@ -88,6 +104,7 @@ form {
     margin-left: 5px;
 }
 
+/* Bottom inputs container styles */
 .bottom-inputs {
     display: flex;
     flex-wrap: wrap;
@@ -95,6 +112,7 @@ form {
     grid-column: 1 / -1;
 }
 
+/* Bottom input group styles */
 .bottom-input-group {
     flex: 1 1 calc(33.333% - 10px);
     display: flex;
@@ -103,6 +121,7 @@ form {
 
 .bottom-input-group label {
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 .bottom-input-group input {
@@ -112,43 +131,57 @@ form {
     border-radius: 4px;
 }
 
+/* Footer text styles */
 .footer-text {
     text-align: right;
     font-weight: bold;
     margin-top: 20px;
 }
 
+/* Button group styles */
 .button-group {
     display: flex;
-    justify-content: center; /* Center the buttons horizontally */
+    justify-content: center;
     align-items: center;
     margin-top: 20px;
     gap: 10px;
 }
 
+/* Button styles */
 button {
     width: 50%;
     height: 40px;
     background-color: black;
     color: white;
     border: none;
-    border-radius: 0; /* Remove border radius */
+    border-radius: 0;
     cursor: pointer;
     font-size: 16px;
 }
 
+/* Hover effect for buttons */
 button:hover {
     background-color: #555;
     transform: scale(1.05);
     transition: background-color 0.3s, transform 0.3s;
 }
 
+/* Specific styles for the Email button */
+button[type="submit"] {
+    width: 100%; /* Ensure button takes full width */
+    height: 50px; /* Increase height */
+    font-size: 18px; /* Increase font size */
+    margin-top: 10px; /* Optional: Add some top margin */
+}
+
+/* Media query for smaller screens */
 @media (max-width: 600px) {
     form {
         grid-template-columns: 1fr;
     }
 
-    .form-group, .bottom-input-group {
+    .form-group,
+    .bottom-input-group {
         flex: 1 1 100%;
     }
 
@@ -157,12 +190,12 @@ button:hover {
     }
 
     .button-group {
-        flex-direction: column; /* Stack buttons vertically on small screens */
+        flex-direction: column;
     }
 
     button {
         width: 100%;
-        border-radius: 4px; /* Add border radius on small screens */
+        border-radius: 4px;
         margin-bottom: 10px;
     }
 
@@ -173,17 +206,4 @@ button:hover {
     .email {
         margin-bottom: 10px;
     }
-}
-
-.signature-container {
-    text-align: right;
-    margin-top: 20px;
-    position: relative;
-}
-
-.signature {
-    width: 100px; /* Adjust the width as needed */
-    height: auto;
-    display: block;
-    margin: 0 auto 10px auto; /* Center the image horizontally and add margin below */
 }
