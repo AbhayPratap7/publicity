@@ -103,7 +103,7 @@ async function downloadPDF() {
 
     // Send data to the backend
     try {
-        const response = await fetch('/api/forms', {
+        const response = await fetch('https://abhay-publicity.vercel.app/api/forms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
