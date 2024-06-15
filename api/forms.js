@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Form = require('../models/formModel'); // Adjust the path if necessary
 
-// Connect to MongoDB
 async function connectToDatabase() {
     if (mongoose.connection.readyState >= 1) {
         return;
@@ -12,16 +11,24 @@ async function connectToDatabase() {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
+    console.log('Connected to MongoDB');
 }
 
-export default async (req, res) => {
+module.exports = async (req, res) => {
     if (req.method === 'POST') {
         try {
+            console.log('Connecting to database...');
             await connectToDatabase();
+            console.log('Database connected');
+            
+            console.log('Saving form data...');
             const newForm = new Form(req.body);
             const savedForm = await newForm.save();
+            console.log('Form data saved');
+            
             res.status(201).json(savedForm);
         } catch (err) {
+            console.error('Error saving form data:', err.message);
             res.status(400).json({ message: err.message });
         }
     } else {
