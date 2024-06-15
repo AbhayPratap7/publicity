@@ -103,7 +103,7 @@ async function downloadPDF() {
 
     // Send data to the backend
     try {
-        const response = await fetch('/api/forms', { // Updated URL to relative path
+        const response = await fetch('/api/forms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -114,14 +114,9 @@ async function downloadPDF() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-
-        const responseData = await response.json();
-        console.log('Form submitted successfully:', responseData);
     } catch (error) {
         console.error('Error:', error);
     }
-}
-
 
     // PDF generation logic...
     const img1 = new Image();
