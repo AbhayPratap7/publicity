@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const formSchema = new mongoose.Schema({
-    roNo: { type: String, required: true },
-    roNoDate: { type: Date, required: true },
+    roNo: { type: String },
+    roNoDate: { type: Date },
     publication: { type: String },
     client: { type: String },
     publishDate: { type: [Date] },
@@ -10,7 +10,7 @@ const formSchema = new mongoose.Schema({
     type: { type: String },
     rate: { type: String },
     edition: { type: String },
-    pageNo: { type: String, required: true },
+    pageNo: { type: String },
     less: { type: String },
     extra: { type: String },
     note: { type: String }
