@@ -10,33 +10,6 @@ function initializeForm() {
 
     const roNoInput = document.getElementById('ro-no');
     
-    // Parse lastRO to an integer, defaulting to initialRO if it's not set or invalid
-    let lastRONumber = parseInt(lastRO) || initialRO;
-
-    // Check if there is a user-entered R.O. No
-    const userRONumber = parseInt(roNoInput.value.trim());
-    if (!isNaN(userRONumber)) {
-        lastRONumber = Math.max(lastRONumber, userRONumber);
-    }
-
-    const suggestedRO = lastRONumber + 1;
-    roNoInput.value = suggestedRO.toString(); // Set the next R.O. No
-
-    // Store the updated R.O. No back into localStorage
-    localStorage.setItem('lastRO', suggestedRO.toString());
-}
-// Function to initialize the form with last entered R.O. No.
-function initializeForm() {
-    const initialRO = 3010; // Set the starting R.O. No
-    let lastRO = localStorage.getItem('lastRO');
-
-    if (lastRO === null) {
-        lastRO = initialRO;
-        localStorage.setItem('lastRO', lastRO.toString());
-    }
-
-    const roNoInput = document.getElementById('ro-no');
-    
     let lastRONumber = parseInt(lastRO) || initialRO;
     const userRONumber = parseInt(roNoInput.value.trim());
     if (!isNaN(userRONumber)) {
@@ -70,6 +43,8 @@ function addPublishDateInput() {
     publishDateContainer.appendChild(br);
 }
 
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyykqhTw46bhG-Pa-spjSljBgcmKCsjPF6uwUqM7hQmk-TmbgBkPqXOQScqx-94809G/exec';
+
 // Function to handle form submission and PDF download
 async function downloadPDF() {
     const { jsPDF } = window.jspdf;
@@ -101,17 +76,18 @@ async function downloadPDF() {
     });
     formDataObject.publishDates = publishDates;
 
-    // Send data to the backend
+    // Send data to Google Sheets via Google Apps Script web app
     try {
-        const response = await fetch('https://abhay-publicity.vercel.app/api/forms', {
+        const response = await fetch(APPS_SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formDataObject)
         });
 
-        if (!response.ok) {
+        if (!response.ok && response.type !== 'opaque') {
             throw new Error('Network response was not ok');
         }
     } catch (error) {
@@ -238,5 +214,3 @@ function initialize() {
 }
 
 document.addEventListener('DOMContentLoaded', initialize);
-
-

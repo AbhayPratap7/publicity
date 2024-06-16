@@ -17,7 +17,7 @@ app.use(cors({
 
 // MongoDB connection
 const mongoURI = process.env.MONGO_URI.trim(); // Use the MONGO_URI from environment variables and trim any leading/trailing whitespace
-mongoose.connect(mongoURI)
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => {
         console.error('MongoDB connection error:', err);
@@ -43,6 +43,23 @@ app.use('/api/forms', formRoutes); // Use the form routes for handling requests
 app.get('*', (_, res) => {
     res.status(404).json({ message: 'Resource not found' });
 });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Internal Server Error' });
+});
+
+// Graceful shutdown
+const gracefulShutdown = () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose disconnected through app termination');
+        process.exit(0);
+    });
+};
+
+process.on('SIGINT', gracefulShutdown); // Listen for SIGINT (Ctrl+C)
+process.on('SIGTERM', gracefulShutdown); // Listen for SIGTERM (kill command)
 
 // Start the server
 app.listen(PORT, () => {
