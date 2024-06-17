@@ -38,6 +38,7 @@ function addPublishDateInput() {
 
     const br = document.createElement('br');
 
+    const publishDateContainer = document.getElementById('publish-date-container');
     publishDateContainer.appendChild(newInput);
     publishDateContainer.appendChild(removeBtn);
     publishDateContainer.appendChild(br);
@@ -53,6 +54,7 @@ async function downloadPDF() {
     doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
 
     const formatDate = (dateString) => {
+        if (!dateString) return 'N/A';
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -152,13 +154,40 @@ async function downloadPDF() {
             const labelWidth = 80;
             const valueIndent = 10;
 
-            const publishDateText = publishDates.length > 0 ? `Publish Date: ${publishDates.join(', ')}` : '';
-            doc.text(publishDateText, 10, startY);
-            startY += 20;
-
+            // Add R.O. No. and R.O. No. Date
             formEntries.forEach(([key, value]) => {
                 const capitalizedKey = key.toUpperCase();
-                if (!capitalizedKey.includes('DATE') && !capitalizedKey.includes('PUBLISH')) {
+                if (capitalizedKey === 'RO-NO') {
+                    doc.text('RO-NO:', 10, startY);
+                    doc.text(value, labelWidth + valueIndent, startY);
+                    startY += lineHeight;
+                } else if (capitalizedKey === 'RO-NO-DATE') {
+                    doc.text('R.O. No. Date:', 10, startY);
+                    doc.text(formatDate(value), labelWidth + valueIndent, startY);
+                    startY += lineHeight;
+                }
+            });
+
+            // Add Client Name and Publish Date
+            formEntries.forEach(([key, value]) => {
+                const capitalizedKey = key.toUpperCase();
+                if (capitalizedKey === 'CLIENT') {
+                    doc.text('CLIENT:', 10, startY);
+                    doc.text(value, labelWidth + valueIndent, startY);
+                    startY += lineHeight;
+                }
+            });
+
+            // Add Publish Dates
+            const publishDateText = publishDates.length > 0 ? publishDates.join(', ') : 'N/A';
+            doc.text('Publish Date:', 10, startY);
+            doc.text(publishDateText, labelWidth + valueIndent, startY);
+            startY += lineHeight;
+
+            // Add remaining form fields
+            formEntries.forEach(([key, value]) => {
+                const capitalizedKey = key.toUpperCase();
+                if (!['RO-NO', 'RO-NO-DATE', 'CLIENT', 'PUBLISH-DATE'].includes(capitalizedKey)) {
                     const text = `${capitalizedKey}:`;
                     doc.text(text, 10, startY);
                     doc.text(value, labelWidth + valueIndent, startY);
@@ -179,38 +208,27 @@ async function downloadPDF() {
             doc.text(signatureName, signatureNameX, signY + 25);
 
             const lineY = doc.internal.pageSize.getHeight() - 20;
-            const lineLength = doc.getTextWidth('For - Perfect Publicity');
+            const lineLength = doc.internal.pageSize.getWidth() / 2;
             const lineX = (doc.internal.pageSize.getWidth() - lineLength) / 2;
+
             doc.line(lineX, lineY, lineX + lineLength, lineY);
+            doc.text("For - Perfect Publicity", lineX + lineLength / 2 - doc.getTextWidth("For - Perfect Publicity") / 2, lineY + 10);
 
-            const textY = lineY - 5;
-            doc.text('For - Perfect Publicity', lineX, textY);
-
-            const pdfBlob = doc.output('blob');
-            handleBlob(pdfBlob);
+            doc.save('document.pdf');
         };
         img2.src = 'swastik-removebg-preview.png';
     };
     img1.src = 'sign.png';
 }
 
-function handleBlob(blob) {
-    const blobURL = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobURL;
-    a.download = 'form-details.pdf';
-    a.click();
-    URL.revokeObjectURL(blobURL);
-}
+// Initialize the form with the last entered R.O. No. when the page loads
+window.onload = initializeForm;
 
-const publishDateContainer = document.getElementById('publish-date-container');
-const addPublishDateBtn = document.getElementById('add-publish-date');
-addPublishDateBtn.addEventListener('click', addPublishDateInput);
+// Add event listener for adding new publish date input
+document.getElementById('add-publish-date').addEventListener('click', addPublishDateInput);
 
-function initialize() {
-    initializeForm();
-    const downloadBtn = document.getElementById('download-pdf');
-    downloadBtn.addEventListener('click', downloadPDF);
-}
-
-document.addEventListener('DOMContentLoaded', initialize);
+// Add event listener for form submission and PDF download
+document.getElementById('download-pdf').addEventListener('click', async function(event) {
+    event.preventDefault(); // Prevent form submission
+    await downloadPDF();
+});
